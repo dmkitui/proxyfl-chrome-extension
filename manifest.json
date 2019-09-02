@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Torrent Mailer",
+  "version": "0.1",
+  "permissions": [
+    "activeTab"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://proxyfl.info/torrent/*"
+      ],
+      "js": ["jquery-3.2.1.min.js", "api.js", "content.js"]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "tt.png",
+    "default_title": "Torrent Fixer"
+  }
+}
