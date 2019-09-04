@@ -1,25 +1,32 @@
-function doStuffWithDom(domContent) {
+function showDownloadBtn(domContent) {
 	function getTorrentLink() {
-		var result;
-		var link =  $(".download")[0]
-		console.log('Tab script:' + $(link).find('a')[0].href);
-		result = $(link).find('a')[0].href;
-		apiScript(result);
-		return result
+		let magneticLink;
+		const link =  $(".download")[0];
+		magneticLink = $(link).find('a')[0].href;
+		
+		const loadingAnimation = document.createElement("IMG"); //
+		loadingAnimation.alt = "Loading...be patient";
+		loadingAnimation.setAttribute('class', 'loading');
+		loadingAnimation.src = chrome.runtime.getURL("static/bar.gif");
+		
+		$('#detailsframe').before('<div class="container-div"></div>');
+		$('.container-div').append('<button class="addButton" >Add To Download List</button>');
+		$('.addButton').on('click', () => {
+			$('.addButton').replaceWith(loadingAnimation);
+			apiScript(magneticLink)
+		});
+		return true
 	}
-	// We have permission to access the activeTab, so we can call chrome.tabs.executeScript:
 	chrome.tabs.executeScript({
-	    code: '(' + getTorrentLink + ')();' //argument here is a string but function.toString() returns function's code
-	}, function (results) {
-    //Here we have just the innerHTML and not DOM structure
-    console.log('ExeciuteScript: ', results)
+	    code: '(' + getTorrentLink + ')();'
+	}, function (magneticLink) {
+    console.log('ExeciuteScript: ', magneticLink);
 	});
 }
 
 chrome.browserAction.onClicked.addListener(function(tab) {
-  // Send a message to the active tab
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    var activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id, {"message": "report_back"}, doStuffWithDom);
+    const activeTab = tabs[0];
+    chrome.tabs.sendMessage(activeTab.id, {"message": "report_back"}, showDownloadBtn);
   });
 });
