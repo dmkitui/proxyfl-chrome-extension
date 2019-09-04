@@ -3,17 +3,23 @@
   "name": "Torrent Mailer",
   "version": "0.1",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "background": {
     "scripts": ["background.js"]
   },
+  "web_accessible_resources": [
+    "css/style.css",
+    "static/bar.gif"
+  ],
   "content_scripts": [
     {
       "matches": [
         "https://proxyfl.info/torrent/*"
       ],
-      "js": ["jquery-3.2.1.min.js", "api.js", "content.js"]
+      "js": ["jquery-3.2.1.min.js", "api.js", "content.js", "creds.js"],
+      "css": [ "css/style.css" ]
     }
   ],
   "browser_action": {
