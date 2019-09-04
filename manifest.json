@@ -7,9 +7,9 @@
     "storage",
     "tabs"
   ],
-  "background": {
-    "scripts": ["background.js"]
-  },
+//  "background": {
+//    "scripts": ["background.js"]
+//  },
   "web_accessible_resources": [
     "css/style.css",
     "static/bar.gif"
