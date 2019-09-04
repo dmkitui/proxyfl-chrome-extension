@@ -4,7 +4,8 @@
   "version": "0.1",
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "background": {
     "scripts": ["background.js"]
@@ -18,6 +19,7 @@
       "matches": [
         "https://proxyfl.info/torrent/*"
       ],
+      "run_at": "document_start",
       "js": ["jquery-3.2.1.min.js", "api.js", "content.js"],
       "css": [ "css/style.css" ]
     }
