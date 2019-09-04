@@ -18,7 +18,7 @@
       "matches": [
         "https://proxyfl.info/torrent/*"
       ],
-      "js": ["jquery-3.2.1.min.js", "api.js", "content.js", "creds.js"],
+      "js": ["jquery-3.2.1.min.js", "api.js", "content.js"],
       "css": [ "css/style.css" ]
     }
   ],
