@@ -1,0 +1,51 @@
+.container-div {
+    width: 100%;
+    height: 60px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 5px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 60px;
+    font-size: larger;
+}
+
+.msgDiv {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    align-content: center;
+}
+
+.addButton {
+    transition-duration: 0.4s;
+    border: 2px solid darkgreen;
+    border-radius: 5px;
+    width: 80%;
+    height: 45px;
+    align-self: center;
+    font-size: larger;
+    color: darkgreen;
+}
+
+.addButton:hover {
+    background-color: green;
+    color: white;
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+    background-image:url('/bar.gif');
+}
+
+.error {
+    border: 2px solid red;
+    color: red;
+}
+
+.success {
+    border: 2px solid darkgreen;
+    color: darkgreen;
+}
