@@ -17,12 +17,12 @@
         "https://proxyfl.info/torrent/*"
       ],
       "run_at": "document_start",
-      "js": ["jquery-3.2.1.min.js", "api.js", "content.js"],
+      "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js"],
       "css": [ "css/style.css" ]
     }
   ],
   "browser_action": {
-    "default_icon": "tt.png",
+    "default_icon": "static/tt.png",
     "default_title": "Torrent Fixer"
   }
 }
