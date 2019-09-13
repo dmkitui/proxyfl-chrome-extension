@@ -17,6 +17,33 @@ const addDownloadBtn = () => {
   return true
 };
 
+const display_free_space = () => {
+	const get_free_space = (credentials) => {
+		const {token, url, password} = credentials;
+		$.ajax({
+			url: url,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'token': token,
+				'password': password,
+				'action': 'free_space'
+			},
+			type: "get",
+		}).done(function (data) {
+			const free_space = data.free_space;
+			const text = `Free space on router: <span class="gb-text">${free_space} GB</span>`;
+			const node = `<p class="free-space-text">${text}</p>`;
+			$('.addButton').after(node).hide().fadeIn(1000);
+			if(free_space < 5) {
+				$('.gb-text').text(`${free_space} GB only!`);
+				$('.gb-text').addClass('low-space')
+			}
+		});
+	};
+	chrome.storage.sync.get(null, get_free_space);
+};
+
 document.addEventListener("DOMContentLoaded", function() {
+  chrome.storage.sync.get(null, display_free_space);
   setTimeout(addDownloadBtn, 1500)
 });
