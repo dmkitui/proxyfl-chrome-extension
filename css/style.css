@@ -1,6 +1,6 @@
 .container-div {
     width: 100%;
-    height: 60px;
+    height: 75px;
     border: none;
     border-radius: 5px;
     margin-top: 5px;
@@ -41,4 +41,23 @@
 .success {
     border: 2px solid darkgreen;
     color: darkgreen;
+}
+.free-space-text {
+    color: darkgreen;
+}
+
+.gb-text {
+    font-weight: bold;
+}
+
+.low-space {
+    color: red !important;
+}
+
+.container-div p {
+    height: 20px;
+    line-height: 20px;
+    margin-top: 0;
+    margin-bottom: 2px;
+    font-size: smaller;
 }
