@@ -19,13 +19,12 @@ const addDownloadBtn = () => {
 
 const display_free_space = () => {
 	const get_free_space = (credentials) => {
-		const {token, url, password} = credentials;
+		const {url, apiKey} = credentials;
 		$.ajax({
 			url: url,
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'token': token,
-				'password': password,
+				'Content-Type': 'application/json',
+				'X-Api-Key': apiKey,
 				'action': 'free_space'
 			},
 			type: "get",
