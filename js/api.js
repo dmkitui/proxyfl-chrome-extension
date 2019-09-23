@@ -1,12 +1,11 @@
 const apiScript = (magnet) => {
 	const apiCall = async (data) => {
-		const {token, url, password} = data;
+		const {url, apiKey} = data;
 		$.ajax({
 			url: url,
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'token': token,
-				'password': password,
+				'Content-Type': 'application/json',
+				'X-Api-Key': apiKey,
 				'magnet': magnet,
 			},
 			type: "post",
