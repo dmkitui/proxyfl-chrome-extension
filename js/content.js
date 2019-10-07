@@ -42,10 +42,8 @@ const display_free_space = () => {
 			type: "get",
 		}).done(function (data) {
 			const free_space = formatData(data.free_space[2]);
-			const text = `Free space on router: <span class="gb-text">${free_space}</span>`;
-			const node = `<p class="free-space-text">${text}</p>`;
-			$('.addButton').after(node).hide().fadeIn(1000);
-
+			const freeSpaceText = `<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`;
+			$('.addButton').after(freeSpaceText).hide().fadeIn(1000);
 			const file_man_link = `<a class='file_man_link' href='https://torrents-api.herokuapp.com/files/' target='_blank'>Manage remote files</a>`
 			$('.gb-text').after(file_man_link).hide().fadeIn(1000)
 		}).fail(error => {
