@@ -60,4 +60,6 @@
 
 .file_man_link {
     margin-left: 20px;
+    text-decoration: none;
+    border-bottom: none !important;
 }
