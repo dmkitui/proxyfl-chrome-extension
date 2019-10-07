@@ -17,6 +17,18 @@ const addDownloadBtn = () => {
   return true
 };
 
+const formatData = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+
 const display_free_space = () => {
 	const get_free_space = (credentials) => {
 		const {url, apiKey} = credentials;
@@ -29,20 +41,19 @@ const display_free_space = () => {
 			},
 			type: "get",
 		}).done(function (data) {
-			const free_space = data.free_space;
-			const text = `Free space on router: <span class="gb-text">${free_space} GB</span>`;
-			const node = `<p class="free-space-text">${text}</p>`;
-			$('.addButton').after(node).hide().fadeIn(1000);
-			if(free_space < 5) {
-				$('.gb-text').text(`${free_space} GB only!`);
-				$('.gb-text').addClass('low-space')
-			}
-		});
+			const free_space = formatData(data.free_space[2]);
+			const freeSpaceText = `<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`;
+			$('.addButton').after(freeSpaceText).hide().fadeIn(1000);
+			const file_man_link = `<a class='file_man_link' href='https://torrents-api.herokuapp.com/files/' target='_blank'>Manage remote files</a>`
+			$('.gb-text').after(file_man_link).hide().fadeIn(1000)
+		}).fail(error => {
+			console.log('ERROR: ', error)
+		})
 	};
 	chrome.storage.sync.get(null, get_free_space);
 };
 
 document.addEventListener("DOMContentLoaded", function() {
   chrome.storage.sync.get(null, display_free_space);
-  setTimeout(addDownloadBtn, 1500)
+  setTimeout(addDownloadBtn, 100)
 });

@@ -50,14 +50,16 @@
     font-weight: bold;
 }
 
-.low-space {
-    color: red !important;
-}
-
 .container-div p {
     height: 20px;
     line-height: 20px;
     margin-top: 0;
     margin-bottom: 2px;
     font-size: smaller;
+}
+
+.file_man_link {
+    margin-left: 20px;
+    text-decoration: none;
+    border-bottom: none !important;
 }
