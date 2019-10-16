@@ -1,4 +1,5 @@
 const addDownloadBtn = () => {
+	sendRandMsg('What now...')
   let magneticLink;
   const link =  $(".download")[0];
   magneticLink = $(link).find('a')[0].href;
@@ -13,6 +14,7 @@ const addDownloadBtn = () => {
   $('.addButton').on('click', () => {
     $('.addButton').replaceWith(loadingAnimation);
     apiScript(magneticLink)
+	  setTimeout(serverConnect, 100)
   });
   return true
 };
@@ -54,6 +56,9 @@ const display_free_space = () => {
 };
 
 document.addEventListener("DOMContentLoaded", function() {
+//	chrome.storage.sync.set({'url': "http://127.0.0.1:5000/torrent/"}, function() {console.log('Saved');});
+//	chrome.storage.sync.set({'apiKey': "emdl%4E60PLWzVpuZomzxQej1U0pMIBYZ10n2DEg@j8uP^Ikp7h#0m1qWLU#K0S"}, function() {console.log('Saved');});
+//	chrome.storage.sync.set({'files_url': "http://127.0.0.1:5000/files/"}, function() {console.log('Saved');});
   chrome.storage.sync.get(null, display_free_space);
   setTimeout(addDownloadBtn, 100)
 });
