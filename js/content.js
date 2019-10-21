@@ -32,6 +32,12 @@ const formatData = (bytes, decimals = 2) => {
 const display_free_space = () => {
 	const get_free_space = (credentials) => {
 		const {url, apiKey} = credentials;
+		if (url === undefined || apiKey === undefined) {
+		    if (confirm('API KEY or URL is not provided. Set Now?')) {
+		        setupCredentials()
+            }
+		    return false
+        }
 		$.ajax({
 			url: url,
 			headers: {
@@ -41,10 +47,15 @@ const display_free_space = () => {
 			},
 			type: "get",
 		}).done(function (data) {
+		    if (typeof data === "string") {
+                chrome.storage.sync.remove(['url', 'apiKey']);
+                $('.addButton').replaceWith('<span class="error">Incorrect API Key or Server URL</span>');
+                return false
+            }
 			const free_space = formatData(data.free_space[2]);
 			const freeSpaceText = `<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`;
 			$('.addButton').after(freeSpaceText).hide().fadeIn(1000);
-			const file_man_link = `<a class='file_man_link' href='https://torrents-api.herokuapp.com/files/' target='_blank'>Manage remote files</a>`
+			const file_man_link = `<a class='file_man_link' href='https://torrents-api.herokuapp.com/files/' target='_blank'>Manage remote files</a>`;
 			$('.gb-text').after(file_man_link).hide().fadeIn(1000)
 		}).fail(error => {
 			console.log('ERROR: ', error)
@@ -53,7 +64,26 @@ const display_free_space = () => {
 	chrome.storage.sync.get(null, get_free_space);
 };
 
+const setupCredentials = () => {
+    chrome.runtime.sendMessage({msg: 'setup_creds'}, function(response) {
+        if(chrome.runtime.lastError) {
+            setTimeout(setupCredentials, 1000);
+        } else {
+            console.log('Credentials updated.');
+        }
+
+    });
+};
+
 document.addEventListener("DOMContentLoaded", function() {
-  chrome.storage.sync.get(null, display_free_space);
-  setTimeout(addDownloadBtn, 100)
+    chrome.storage.sync.get(null, display_free_space);
+    setTimeout(addDownloadBtn, 100)
+});
+
+chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
+    console.log('Did we reveive the messsage?')
+    if (request.msg === 'credsLoaded') {
+        window.location.reload(true);
+        sendResponse({state: 'Completed'})
+    }
 });

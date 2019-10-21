@@ -11,13 +11,17 @@
     "css/style.css",
     "static/bar.gif"
   ],
+  "background": {
+    "scripts": ["js/background.js"],
+    "persistent": true
+  },
   "content_scripts": [
     {
       "matches": [
         "https://proxyfl.info/torrent/*"
       ],
       "run_at": "document_start",
-      "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js"],
+      "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js", "js/popup.js"],
       "css": [ "css/style.css" ]
     }
   ],
