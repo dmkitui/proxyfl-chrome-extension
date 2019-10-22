@@ -1,20 +1,28 @@
+let serverStatus = false;
+
 const addDownloadBtn = () => {
-  let magneticLink;
-  const link =  $(".download")[0];
-  magneticLink = $(link).find('a')[0].href;
-  
-  const loadingAnimation = document.createElement("IMG"); //
-  loadingAnimation.alt = "Loading...be patient";
-  loadingAnimation.setAttribute('class', 'loading');
-  loadingAnimation.src = chrome.runtime.getURL("static/bar.gif");
-  
-  $('#detailsframe').before('<div class="container-div"></div>').slideDown(10000);
-  $('.container-div').append('<button class="addButton" >Add To Download List</button>').hide().fadeIn(1000);
-  $('.addButton').on('click', () => {
+    let magneticLink;
+    const link =  $(".download")[0];
+    magneticLink = $(link).find('a')[0].href;
+
+    const loadingAnimation = document.createElement("IMG"); //
+    loadingAnimation.alt = "Loading...be patient";
+    loadingAnimation.setAttribute('class', 'loading');
+    loadingAnimation.src = chrome.runtime.getURL("static/bar.gif");
+
+    $('#detailsframe').before('<div class="container-div"></div>').slideDown(10000)
+    if (serverStatus) {
+        $('.container-div').append('<button class="addButton" >Add To Download List</button>').hide().fadeIn(1000);
+    } else {
+        $('.container-div').append('<span class="error" >Backend Server Not Found</span>').hide().fadeIn(1000);
+        return
+    }
+
+    $('.addButton').on('click', () => {
     $('.addButton').replaceWith(loadingAnimation);
     apiScript(magneticLink)
-  });
-  return true
+    });
+    return true
 };
 
 const formatData = (bytes, decimals = 2) => {
@@ -36,7 +44,7 @@ const display_free_space = () => {
 		    if (confirm('API KEY or URL is not provided. Set Now?')) {
 		        setupCredentials()
             }
-		    return false
+		    return
         }
 		$.ajax({
 			url: url,
@@ -52,6 +60,7 @@ const display_free_space = () => {
                 $('.addButton').replaceWith('<span class="error">Incorrect API Key or Server URL</span>');
                 return false
             }
+		    serverStatus = true;
 			const free_space = formatData(data.free_space[2]);
 			const freeSpaceText = `<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`;
 			$('.addButton').after(freeSpaceText).hide().fadeIn(1000);
@@ -59,9 +68,11 @@ const display_free_space = () => {
 			$('.gb-text').after(file_man_link).hide().fadeIn(1000)
 		}).fail(error => {
 			console.log('ERROR: ', error)
+            alert(`Error accessing server: ${url}. Kindly confirm the server is online.`)
 		})
 	};
 	chrome.storage.sync.get(null, get_free_space);
+    setTimeout(addDownloadBtn, 1000)
 };
 
 const setupCredentials = () => {
@@ -77,11 +88,9 @@ const setupCredentials = () => {
 
 document.addEventListener("DOMContentLoaded", function() {
     chrome.storage.sync.get(null, display_free_space);
-    setTimeout(addDownloadBtn, 100)
 });
 
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log('Did we reveive the messsage?')
     if (request.msg === 'credsLoaded') {
         window.location.reload(true);
         sendResponse({state: 'Completed'})
