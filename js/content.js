@@ -19,10 +19,9 @@ const addDownloadBtn = () => {
     }
 
     $('.addButton').on('click', () => {
-    $('.addButton').replaceWith(loadingAnimation);
-    apiScript(magneticLink)
+        $('.addButton').replaceWith(loadingAnimation);
+        apiScript(magneticLink)
     });
-    return true
 };
 
 const formatData = (bytes, decimals = 2) => {
