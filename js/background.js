@@ -1,8 +1,8 @@
 console.log('We loaded background js.')
 
-const messageSender = () => {
+const messageSender = (msg) => {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {msg: 'credsLoaded'}, function (response) {
+        chrome.tabs.sendMessage(tabs[0].id, {msg: msg}, function (response) {
             if (chrome.runtime.lastError) {
                 setTimeout(messageSender, 1000);
             } else {
@@ -10,7 +10,7 @@ const messageSender = () => {
             }
         });
     });
-}
+};
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.msg === 'setup_creds') {
@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         chrome.storage.sync.set({'url': request.creds.url, 'apiKey': request.creds.apiKey}, function () {
             console.log('URL Saved');
         });
-        messageSender()
+        messageSender('credsLoaded')
         sendResponse({state: 'completed'});
     } else {
         console.log('I have no idea whta is hapeening: ', request.msg)
