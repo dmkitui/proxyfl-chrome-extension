@@ -42,8 +42,14 @@ window.onload = function () {
     const linkInput = $('.magnetic-input')
     linkInput.focus()
     $('#addButton').on('click', function (evt) {
-        console.log('Adding torrent in a few...')
         const link = linkInput.val();
+
+        const spinner = document.createElement('i')
+        spinner.alt = 'Contacting server'
+        spinner.setAttribute('class', 'fa fa-spinner fa-spin');
+        spinner.setAttribute('style', 'font-size:48px;color:green;');
+        $('.content-div').replaceWith(spinner);
+
         sendLink(link)
     });
 
