@@ -21,12 +21,13 @@
         "https://proxyfl.info/torrent/*"
       ],
       "run_at": "document_start",
-      "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js", "js/popup.js"],
+      "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js", "js/popup.js", "js/addMagnet.js"],
       "css": [ "css/style.css" ]
     }
   ],
   "browser_action": {
     "default_icon": "static/tt.png",
-    "default_title": "Torrent Fixer"
+    "default_title": "Torrent Fixer",
+    "default_popup": "html/addMagnet.html"
   }
 }
