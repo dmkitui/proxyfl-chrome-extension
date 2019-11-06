@@ -18,7 +18,9 @@
   "content_scripts": [
     {
       "matches": [
-        "https://proxyfl.info/torrent/*"
+        "https://proxyfl.info/torrent/*",
+        "https://piratbaytpb.one/torrent/*",
+        "https://indiaprox.org/torrent/*"
       ],
       "run_at": "document_start",
       "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js", "js/popup.js", "js/addMagnet.js"],
