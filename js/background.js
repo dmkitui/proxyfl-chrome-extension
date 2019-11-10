@@ -2,7 +2,7 @@ console.log('We loaded background js.')
 
 const messageSender = (msg) => {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, {msg: msg}, function (response) {
+        chrome.tabs.sendMessage(tabs[0].id, {msg: 'credsLoaded'}, function (response) {
             if (chrome.runtime.lastError) {
                 setTimeout(messageSender, 1000);
             } else {
