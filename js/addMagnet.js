@@ -1,5 +1,3 @@
-console.log('What now, laoded ');
-
 const sendLink = (magnet) => {
     const apiCall = async (data) => {
         const {url, apiKey} = data;
@@ -37,8 +35,51 @@ const sendMsg = (link) => {
         }
     });
 };
+const formatStuff = (bytes, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+
+function free_space (credentials) {
+    const {url, apiKey} = credentials;
+   	if (url === undefined || apiKey === undefined) {
+   	    if (confirm('API KEY or URL is not provided. Set Now?')) {
+   	        setupCredentials()
+              }
+   	    return
+    }
+   	$.ajax({
+   		url: url,
+   		headers: {
+   			'Content-Type': 'application/json',
+   			'X-Api-Key': apiKey,
+   			'action': 'free_space'
+   		},
+   		type: "get",
+   	}).done(function (data) {
+        if (typeof data === "string") {
+            chrome.storage.sync.remove(['url', 'apiKey']);
+            $('.main-container').replaceWith('<span class="error">Incorrect API Key or Server URL</span>');
+            return false
+        }
+        const free_space = formatStuff(data.free_space[2]);
+        $('.gb-text').text(free_space)
+
+    }).fail(error => {
+    	    console.log('ERROR: ', error)
+    })
+}
+
 
 window.onload = function () {
+    chrome.storage.sync.get(null, free_space);
     const linkInput = $('.magnetic-input')
     linkInput.focus()
     $('#addButton').on('click', function (evt) {
@@ -54,17 +95,12 @@ window.onload = function () {
     });
 
     linkInput.on('paste drop', function () {
-        console.log('Blurred event start...');
         setTimeout(function () {
             const link = $('.magnetic-input').val();
-            console.log('Blurred event ', link);
-            console.log('XXXX: ', link.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i));
             if (link.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32}/i) != null) {
-                console.log('Valid link')
                 $('#addButton').prop('disabled', false);
                 $('.magnetic-input').removeClass('hasError')
             } else {
-                console.log('Invalid link...')
                 $('.magnetic-input').addClass('hasError')
             }
         }, 200)

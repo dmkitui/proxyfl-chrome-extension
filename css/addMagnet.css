@@ -1,6 +1,6 @@
 body {
     width: 650px;
-    height: 180px;
+    height: 250px;
 }
 
 .main-div {
@@ -34,7 +34,7 @@ body {
 }
 
 .addBtn {
-    margin-top: 5px;
+    margin-top: 15px;
 }
 
 .title-div {
@@ -68,4 +68,5 @@ body {
 
 .content-div {
     height: 100px;
+    margin-top: 10px;
 }
