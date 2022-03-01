@@ -1,15 +1,16 @@
+let magneticLink;
+let fileSize;
+
 const addDownloadBtn = () => {
-    let magneticLink;
-    const link =  $(".download")[0];
-    magneticLink = $(link).find('a')[0].href;
+    // let magneticLink =  $(".kaGiantButton")[0].href;
 
     const loadingAnimation = document.createElement("IMG"); //
     loadingAnimation.alt = "Loading...be patient";
     loadingAnimation.setAttribute('class', 'loading');
     loadingAnimation.src = chrome.runtime.getURL("static/bar.gif");
 
-    $('#detailsframe').before('<div class="container-div"></div>').slideDown(10000);
-    $('.container-div').append('<button class="addButton" >Add To Download List</button>').hide().fadeIn(1000);
+    $('.tabNavigation').before('<div class="container-div"></div>').slideDown(10000);
+    $('.container-div').append('<button class="addButton" >Evaluating Home Router Status</button>').hide().fadeIn(1000);
 
     $('.addButton').on('click', () => {
         $('.addButton').replaceWith(loadingAnimation);
@@ -53,10 +54,17 @@ const display_free_space = () => {
                    return false
                }
     		const free_space = formatData(data.free_space[2]);
-    		const freeSpaceText = `<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`;
-    		$('.addButton').after(freeSpaceText).hide().fadeIn(1000);
-    		const file_man_link = `<a class='file_man_link' href='https://torrents-api.herokuapp.com/files/' target='_blank'>Manage remote files</a>`;
-    		$('.gb-text').after(file_man_link).hide().fadeIn(1000)
+            let spaceAvailability = freeSpaceEvaluator(free_space);
+
+            if (spaceAvailability === 'no-space') {
+                $('.addButton').text('No Space Available').prop('disabled', true)
+            } else {
+                $('.addButton').text('Add To Download List')
+            }
+
+    		$('.addButton').addClass(spaceAvailability).after(`<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`).hide().fadeIn(1000);
+
+    		$('.gb-text').after(`<a class='file_man_link' href='https://home.nairobibit.co.ke/files/' target='_blank'>Manage remote files</a>`).hide().fadeIn(1000)
     	}).fail(error => {
     	    console.log('ERROR: ', error)
             $('.addButton').replaceWith(`<span class="error">Error accessing server: ${url}. Kindly confirm the server is online.</span>`);
@@ -78,8 +86,35 @@ const setupCredentials = () => {
     });
 };
 
+const freeSpaceEvaluator = (freeSpace) => {
+    const availableSpace = sizeToBytes(freeSpace);
+    const fileSizeBytes = sizeToBytes(fileSize);
+
+    if ((availableSpace - fileSizeBytes)/1024*1024*1024 < 0.5) {
+        return 'no-space'
+    } else {
+        return 'space-available'
+    }
+};
+
+const sizeToBytes = (sizeString) => {
+    let  [size, units] = sizeString.split(' ');
+    if (units === "KB") {
+        return size * 1024
+    } else if (units === 'MB') {
+        return size * 1024 * 1024
+    } else if (units === "GB") {
+        return size * 1024 * 1024 * 1024
+    }
+};
+
 document.addEventListener("DOMContentLoaded", function() {
     chrome.storage.sync.get(null, display_free_space);
+    const fileMetaData = $('.sharingWidgetBox');
+
+    magneticLink = $(fileMetaData).find('a.siteButton.giantButton')[0].href;
+    let fileSizeDiv = $(fileMetaData).find('.widgetSize').find('strong')[0];
+    fileSize = $(fileSizeDiv).text();
 });
 
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {

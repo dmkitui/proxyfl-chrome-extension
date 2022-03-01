@@ -18,12 +18,11 @@
   "content_scripts": [
     {
       "matches": [
-        "https://proxyfl.info/torrent/*",
-        "https://piratbaytpb.one/torrent/*",
-        "https://indiaprox.org/torrent/*",
-        "https://thepiratetpb.xyz/torrent/*",
-        "https://bayunblocked.net/torrent/*",
-        "https://piratebaaipirate.art/torrent/*"
+        "https://katcr.to/*.html"
+      ],
+      "exclude_matches": [
+        "https://katcr.to/",
+        "https://katcr.to/usearch/*/"
       ],
       "run_at": "document_start",
       "js": ["js/jquery-3.2.1.min.js", "js/api.js", "js/content.js", "js/popup.js", "js/addMagnet.js"],

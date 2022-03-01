@@ -3,7 +3,7 @@
     height: 75px;
     border: none;
     border-radius: 5px;
-    margin-top: 5px;
+    margin: 2em 0;
     text-align: center;
     vertical-align: middle;
     line-height: 60px;
@@ -13,17 +13,31 @@
 
 .addButton {
     transition-duration: 0.4s;
-    border: 2px solid darkgreen;
     border-radius: 5px;
     width: 80%;
     height: 45px;
     align-self: center;
     font-size: larger;
+
+}
+
+.addButton.space-available {
+    border: 2px solid darkgreen;
     color: darkgreen;
 }
 
-.addButton:hover {
+.addButton.no-space {
+    border: 2px solid indianred;
+    color: indianred;
+}
+
+.addButton.space-available:hover {
     background-color: green;
+    color: white;
+}
+
+.addButton.no-space:hover {
+    background-color: indianred;
     color: white;
 }
 
@@ -60,6 +74,6 @@
 
 .file_man_link {
     margin-left: 20px;
-    text-decoration: none;
+    text-decoration: underline;
     border-bottom: none !important;
 }
