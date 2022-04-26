@@ -2,8 +2,6 @@ let magneticLink;
 let fileSize;
 
 const addDownloadBtn = () => {
-    // let magneticLink =  $(".kaGiantButton")[0].href;
-
     const loadingAnimation = document.createElement("IMG"); //
     loadingAnimation.alt = "Loading...be patient";
     loadingAnimation.setAttribute('class', 'loading');
@@ -53,7 +51,7 @@ const display_free_space = () => {
                    $('.addButton').replaceWith('<span class="error">Incorrect API Key or Server URL</span>');
                    return false
                }
-    		const free_space = formatData(data.free_space[2]);
+    		const free_space = formatData(data.free_space);
             let spaceAvailability = freeSpaceEvaluator(free_space);
 
             if (spaceAvailability === 'no-space') {
@@ -61,7 +59,6 @@ const display_free_space = () => {
             } else {
                 $('.addButton').text('Add To Download List')
             }
-
     		$('.addButton').addClass(spaceAvailability).after(`<p class="free-space-text">Free space on router: <span class="gb-text">${free_space}</span></p>`).hide().fadeIn(1000);
 
     		$('.gb-text').after(`<a class='file_man_link' href='https://home.nairobibit.co.ke/files/' target='_blank'>Manage remote files</a>`).hide().fadeIn(1000)

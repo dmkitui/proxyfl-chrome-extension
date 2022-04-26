@@ -69,7 +69,7 @@ function free_space (credentials) {
             $('.main-container').replaceWith('<span class="error">Incorrect API Key or Server URL</span>');
             return false
         }
-        const free_space = formatStuff(data.free_space[2]);
+        const free_space = formatStuff(data.free_space);
         $('.gb-text').text(free_space)
 
     }).fail(error => {
@@ -80,13 +80,13 @@ function free_space (credentials) {
 
 window.onload = function () {
     chrome.storage.sync.get(null, free_space);
-    const linkInput = $('.magnetic-input')
-    linkInput.focus()
+    const linkInput = $('.magnetic-input');
+    linkInput.focus();
     $('#addButton').on('click', function (evt) {
         const link = linkInput.val();
 
-        const spinner = document.createElement('i')
-        spinner.alt = 'Contacting server'
+        const spinner = document.createElement('i');
+        spinner.alt = 'Contacting server';
         spinner.setAttribute('class', 'fa fa-spinner fa-spin');
         spinner.setAttribute('style', 'font-size:48px;color:green;');
         $('.content-div').replaceWith(spinner);
