@@ -7,7 +7,11 @@ const addDownloadBtn = () => {
     loadingAnimation.setAttribute('class', 'loading');
     loadingAnimation.src = chrome.runtime.getURL("static/bar.gif");
 
-    $('.tabNavigation').before('<div class="container-div"></div>').slideDown(10000);
+    let target = $('div#detailsframe, ul.tabNavigation')[0];
+
+    console.log('TARGET ACQUIRED: ', target)
+
+    $(target).before('<div class="container-div"></div>').slideDown(10000);
     $('.container-div').append('<button class="addButton" >Evaluating Home Router Status</button>').hide().fadeIn(1000);
 
     $('.addButton').on('click', () => {
@@ -44,7 +48,7 @@ const display_free_space = () => {
     			'X-Api-Key': apiKey,
     			'action': 'free_space'
     		},
-    		type: "get",
+    		type: 'get',
     	}).done(function (data) {
     	    if (typeof data === "string") {
                    chrome.storage.sync.remove(['url', 'apiKey']);
@@ -107,11 +111,17 @@ const sizeToBytes = (sizeString) => {
 
 document.addEventListener("DOMContentLoaded", function() {
     chrome.storage.sync.get(null, display_free_space);
-    const fileMetaData = $('.sharingWidgetBox');
 
-    magneticLink = $(fileMetaData).find('a.siteButton.giantButton')[0].href;
-    let fileSizeDiv = $(fileMetaData).find('.widgetSize').find('strong')[0];
-    fileSize = $(fileSizeDiv).text();
+    if (window.location.hostname === 'katcr.to') {
+        const fileMetaData = $('.sharingWidgetBox');
+        magneticLink = $(fileMetaData).find('a.siteButton.giantButton')[0].href;
+        let fileSizeDiv = $(fileMetaData).find('.widgetSize').find('strong')[0];
+        fileSize = $(fileSizeDiv).text();
+    } else if (window.location.hostname === 'tpb.party') {
+        fileSize = $('dl.col1').find('dd')[2].textContent;
+        magneticLink = $("a[title='Get this torrent']")[0].href
+    }
+
 });
 
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {

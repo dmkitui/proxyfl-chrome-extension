@@ -52,7 +52,7 @@ function free_space (credentials) {
    	if (url === undefined || apiKey === undefined) {
    	    if (confirm('API KEY or URL is not provided. Set Now?')) {
    	        setupCredentials()
-              }
+   	    }
    	    return
     }
    	$.ajax({

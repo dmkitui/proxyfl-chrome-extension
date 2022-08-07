@@ -1,8 +1,8 @@
-	chrome.storage.sync.set({'url': "https://torrents-api.herokuapp.com/torrent/"}, function() {console.log('Saved');});
+	chrome.storage.sync.set({'url': "https://home.nairobibit.co.ke/torrent/"}, function() {console.log('Saved');});
 	chrome.storage.sync.set({'apiKey': "emdl%4E60PLWzVpuZomzxQej1U0pMIBYZ10n2DEg@j8uP^Ikp7h#0m1qWLU#K0S"}, function() {console.log('Saved');});
-	chrome.storage.sync.set({'files_url': 'https://torrents-api.herokuapp.com/files/'}, function() {console.log('Saved');});
+	chrome.storage.sync.set({'files_url': 'https://home.nairobibit.co.ke/files/'}, function() {console.log('Saved');});
 
-	api_url = 'https://torrents-api.herokuapp.com/files/'
+	api_url = 'https://home.nairobibit.co.ke/files/'
 
 	http://127.0.0.1:5000/torrent/
 
