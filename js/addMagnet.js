@@ -1,20 +1,24 @@
 const sendLink = (magnet) => {
     const apiCall = async (data) => {
         const {url, apiKey} = data;
+        console.log('----> ', url, ' Key ', apiKey)
         $.ajax({
             url: url,
-            headers: {'Content-Type': 'application/json', 'X-Api-Key': apiKey, 'magnet': magnet,},
-            type: "post",
+            headers: {'Content-Type': 'application/json', 'X-Api-Key': apiKey},
+            type: 'post',
+            data: JSON.stringify({
+                magneticLink: magnet,
+                fileSize: '',
+                name: decodeURI(magnet.match("&dn=(.*?)&tr=")[1]).replaceAll('+', ' ')
+            })
         }).done((res) => {
             if (res.message === 'Success!') {
-                console.log('Torrent added nicely...')
                 $('.main-container').replaceWith('<div class="success-div">Torrent Added Successfully</div>')
                 setTimeout(function () {
                     window.close();
                 }, 10000)
             }
         }).fail(error => {
-            console.log('Error detected....')
             $('.main-container').addClass('error-div');
             if (error.status === 409) {
                 $('.main-container').text('That stuff is already listed/downloaded. Get around to watching the stuff sometime.');

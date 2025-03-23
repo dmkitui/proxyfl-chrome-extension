@@ -5,10 +5,10 @@ const apiScript = (magnet) => {
 			url: url,
 			headers: {
 				'Content-Type': 'application/json',
-				'X-Api-Key': apiKey,
-				'magnet': magnet,
+				'X-Api-Key': apiKey
 			},
 			type: "post",
+			data: JSON.stringify(magnet)
 		}).done((res) => {
 			if (res.message === 'Success!') {
 		    $('.container-div').addClass('success');

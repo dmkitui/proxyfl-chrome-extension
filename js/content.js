@@ -1,5 +1,6 @@
 let magneticLink;
 let fileSize;
+let magneticData = {};
 
 const addDownloadBtn = () => {
     const loadingAnimation = document.createElement("IMG"); //
@@ -9,14 +10,12 @@ const addDownloadBtn = () => {
 
     let target = $('div#detailsframe, ul.tabNavigation')[0];
 
-    console.log('TARGET ACQUIRED: ', target)
-
     $(target).before('<div class="container-div"></div>').slideDown(10000);
     $('.container-div').append('<button class="addButton" >Evaluating Home Router Status</button>').hide().fadeIn(1000);
 
     $('.addButton').on('click', () => {
         $('.addButton').replaceWith(loadingAnimation);
-        apiScript(magneticLink)
+        apiScript(magneticData)
     });
 };
 
@@ -89,7 +88,7 @@ const setupCredentials = () => {
 
 const freeSpaceEvaluator = (freeSpace) => {
     const availableSpace = sizeToBytes(freeSpace);
-    const fileSizeBytes = sizeToBytes(fileSize);
+    const fileSizeBytes = sizeToBytes(magneticData.fileSize);
 
     if ((availableSpace - fileSizeBytes)/1024*1024*1024 < 0.5) {
         return 'no-space'
@@ -111,16 +110,30 @@ const sizeToBytes = (sizeString) => {
 
 document.addEventListener("DOMContentLoaded", function() {
     chrome.storage.sync.get(null, display_free_space);
-
+    let name;
     if (window.location.hostname === 'katcr.to') {
         const fileMetaData = $('.sharingWidgetBox');
-        magneticLink = $(fileMetaData).find('a.siteButton.giantButton')[0].href;
+        // magneticLink = $(fileMetaData).find('a.siteButton.giantButton')[0].href;
         let fileSizeDiv = $(fileMetaData).find('.widgetSize').find('strong')[0];
-        fileSize = $(fileSizeDiv).text();
+        // fileSize = $(fileSizeDiv).text();
+        // name = $('span[itemprop="name"]')[0].textContent;
+        magneticData = {
+            magneticLink: $(fileMetaData).find('a.siteButton.giantButton')[0].href,
+            fileSize: $(fileSizeDiv).text(),
+            name: $('span[itemprop="name"]')[0].textContent
+        };
     } else if (window.location.hostname === 'tpb.party') {
-        fileSize = $('dl.col1').find('dd')[2].textContent;
-        magneticLink = $("a[title='Get this torrent']")[0].href
+        // fileSize = $('dl.col1').find('dd')[2].textContent;
+        // magneticLink = $("a[title='Get this torrent']")[0].href;
+        // name = $('div#title')[0].textContent;
+        magneticData = {
+            magneticLink: $("a[title='Get this torrent']")[0].href,
+            fileSize: $('dl.col1').find('dd')[2].textContent,
+            name: $('div#title')[0].textContent
+        };
     }
+
+    console.log('Names: ', magneticData)
 
 });
 
