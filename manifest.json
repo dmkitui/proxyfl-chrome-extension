@@ -20,7 +20,8 @@
       "matches": [
         "https://katcr.to/*.html",
         "https://thepiratebay3.co/search/?q=*",
-        "https://tpb.party/torrent/*/*"
+        "https://tpb.party/torrent/*/*",
+        "https://1337x.to/torrent/*/*/"
       ],
       "exclude_matches": [
         "https://katcr.to/",

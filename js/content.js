@@ -8,7 +8,13 @@ const addDownloadBtn = () => {
     loadingAnimation.setAttribute('class', 'loading');
     loadingAnimation.src = chrome.runtime.getURL("static/bar.gif");
 
-    let target = $('div#detailsframe, ul.tabNavigation')[0];
+    let target;
+    if (window.location.hostname === '1337x.to') {
+        target = $('div.row');
+    } else {
+        target = $('div#detailsframe, ul.tabNavigation')[0];
+    }
+    console.log('Did we find the bugger: ', target)
 
     $(target).before('<div class="container-div"></div>').slideDown(10000);
     $('.container-div').append('<button class="addButton" >Evaluating Home Router Status</button>').hide().fadeIn(1000);
@@ -49,6 +55,7 @@ const display_free_space = () => {
     		},
     		type: 'get',
     	}).done(function (data) {
+            console.log('>>>> ', data)
     	    if (typeof data === "string") {
                    chrome.storage.sync.remove(['url', 'apiKey']);
                    $('.addButton').replaceWith('<span class="error">Incorrect API Key or Server URL</span>');
@@ -87,6 +94,7 @@ const setupCredentials = () => {
 };
 
 const freeSpaceEvaluator = (freeSpace) => {
+    console.log('MD: ', magneticData)
     const availableSpace = sizeToBytes(freeSpace);
     const fileSizeBytes = sizeToBytes(magneticData.fileSize);
 
@@ -128,8 +136,14 @@ document.addEventListener("DOMContentLoaded", function() {
         // name = $('div#title')[0].textContent;
         magneticData = {
             magneticLink: $("a[title='Get this torrent']")[0].href,
-            fileSize: $('dl.col1').find('dd')[2].textContent,
+            fileSize: $('dl.col1').find('dd')[2].text(),
             name: $('div#title')[0].textContent
+        };
+    } else if (window.location.hostname === '1337x.to') {
+        magneticData = {
+            magneticLink: $("a[id='openPopup']")[0].href,  // $("a[title='Get this torrent']")[0].href,
+            fileSize: $('ul.list li:nth-child(4) span')[0].textContent,   // $('dl.col1').find('dd')[2].textContent,
+            name: $('.box-info-heading.clearfix h1').text()
         };
     }
 
